@@ -1,14 +1,11 @@
-import os
-
 from flask import Flask
+from . import routes
 
 
 def create_app():
 
     app = Flask(__name__, instance_relative_config=True)
 
-    @app.route('/')
-    def hello():
-        return 'Experiment mock'
+    app.register_blueprint(routes.bp_main)
 
     return app
