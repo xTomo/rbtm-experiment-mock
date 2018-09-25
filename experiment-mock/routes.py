@@ -2,7 +2,7 @@ from flask import Blueprint
 
 
 bp_main = Blueprint('main', __name__, url_prefix='/')
-bp_tomograph = Blueprint('tomograph', __name__, url_prefix='/tomograph')
+bp_tomograph = Blueprint('tomograph', __name__, url_prefix='/tomograph/<int:tomo_num>')
 
 
 @bp_main.route('/', methods=['GET'])
@@ -11,5 +11,7 @@ def main_route():
 
 
 @bp_tomograph.route('/', methods=['GET'])
-def tomograph():
-    return 'TOMOGRAPH'
+def tomograph(tomo_num):
+    return 'TOMOGRAPH {}'.format(tomo_num)
+
+
