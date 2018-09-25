@@ -7,7 +7,7 @@ bp_tomograph = Blueprint('tomograph', __name__, url_prefix='/tomograph/<int:tomo
 
 @bp_main.route('/', methods=['GET'])
 def main_route():
-    return 'Experiment mock'
+    return 'RBTM experiment mock'
 
 
 @bp_tomograph.route('/', methods=['GET'])
