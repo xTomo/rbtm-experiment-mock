@@ -21,11 +21,6 @@ def main_route():
     return 'RBTM experiment mock'
 
 
-@bp_tomograph.route('/', methods=['GET'])
-def tomograph(tomo_num):
-    return 'TOMOGRAPH {}'.format(tomo_num)
-
-
 # State route
 @bp_tomograph.route('/state', methods=['GET'])
 def check_state(tomo_num):
