@@ -24,18 +24,19 @@ def main_route():
 # State route
 @bp_tomograph.route('/state', methods=['GET'])
 def check_state(tomo_num):
-    return request.url
+    tomo_state, exception_message = tomograph.tomo_state()
+    return create_response(success=True, result=tomo_state, exception_message=exception_message)
 
 
 # Source routes
 @bp_tomograph.route('/source/power-on', methods=['GET'])
 def source_power_on(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='source_power_on')
 
 
 @bp_tomograph.route('/source/power-off', methods=['GET'])
 def source_power_off(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='source_power_off')
 
 
 @bp_tomograph.route('/source/set-voltage', methods=['POST'])
