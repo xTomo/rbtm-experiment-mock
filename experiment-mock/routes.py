@@ -41,22 +41,28 @@ def source_power_off(tomo_num):
 
 @bp_tomograph.route('/source/set-voltage', methods=['POST'])
 def source_set_voltage(tomo_num):
-    return request.url
+    success, new_voltage, response_if_fail = check_request(request.data)
+    if not success:
+        return response_if_fail
+    return call_method_create_response(tomo_num, method_name='source_set_voltage', args=new_voltage)
 
 
 @bp_tomograph.route('/source/set-current', methods=['POST'])
 def source_set_current(tomo_num):
-    return request.url
+    success, new_current, response_if_fail = check_request(request.data)
+    if not success:
+        return response_if_fail
+    return call_method_create_response(tomo_num, method_name='source_set_current', args=new_current)
 
 
 @bp_tomograph.route('/source/get-voltage', methods=['GET'])
 def source_get_voltage(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='source_get_voltage')
 
 
 @bp_tomograph.route('/source/get-current', methods=['GET'])
 def source_get_current(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='source_get_current')
 
 
 # Shutter routes
