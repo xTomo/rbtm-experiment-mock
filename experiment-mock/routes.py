@@ -178,3 +178,16 @@ def call_method_create_response(tomo_num, method_name, args=(), GET_FRAME_method
         return create_response(success=True, result=result)
     else:
         return send_file('../' + FRAME_PNG_FILENAME, mimetype='image/png')
+
+
+def check_request(request_data):
+
+    if not request_data:
+        return False, None, create_response(success=False, error='Request is empty')
+
+    try:
+        request_data_dict = json.loads(request_data)
+    except TypeError:
+        return False, None, create_response(success=False, error='Request has not JSON data')
+    else:
+        return True, request_data_dict, ''
