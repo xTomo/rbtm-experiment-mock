@@ -1,6 +1,10 @@
 from flask import (
-    Blueprint, request
+    Blueprint, request, send_file
 )
+import json
+
+
+FRAME_PNG_FILENAME = 'image.png'
 
 
 bp_main = Blueprint('main', __name__, url_prefix='/')
@@ -147,3 +151,30 @@ def experiment_start(tomo_num):
 @bp_tomograph.route('/experiment/stop', methods=['GET'])  # TODO: GET?
 def experiment_stop(tomo_num):
     return request.url
+
+
+# functions
+def create_response(success=True, exception_message='', error='', result=None):
+    response_dict = {
+        'success': success,
+        'exception message': exception_message,
+        'error': error,
+        'result': result,
+    }
+    return json.dumps(response_dict)
+
+
+def call_method_create_response(tomo_num, method_name, args=(), GET_FRAME_method=False):
+
+    if type(args) not in (tuple, list):
+        args = (args,)
+
+    try:
+        result = getattr(tomograph, method_name)(*args)
+    except ModExpError as e:
+        return e.create_response()
+
+    if not GET_FRAME_method:
+        return create_response(success=True, result=result)
+    else:
+        return send_file('../' + FRAME_PNG_FILENAME, mimetype='image/png')
