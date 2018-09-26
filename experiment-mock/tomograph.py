@@ -5,6 +5,8 @@ class Tomograph:
 
     def __init__(self):
         self.current_experiment = None
+        self.source_current = None  # mock only property
+        self.source_voltage = None  # mock only property
 
     def basic_tomo_check(self, from_experiment):
         if not from_experiment:
