@@ -27,3 +27,33 @@ class Tomograph:
 
     def source_power_off(self, from_experiment=False):
         self.basic_tomo_check(from_experiment)
+
+    def source_set_voltage(self, new_voltage, from_experiment=False):
+        self.basic_tomo_check(from_experiment=from_experiment)
+
+        if type(new_voltage) is not float:
+            raise ModExpError(error='Incorrect format: type must be float')
+
+        if new_voltage < 2 or 60 < new_voltage:
+            raise ModExpError(error='Voltage must have value from 2 to 60!')
+
+        self.source_voltage = new_voltage
+
+    def source_set_current(self, new_current, from_experiment=False):
+        self.basic_tomo_check(from_experiment=from_experiment)
+
+        if type(new_current) is not float:
+            raise ModExpError(error='Incorrect format: type must be float')
+
+        if new_current < 2 or 80 < new_current:
+            raise ModExpError(error='Current must have value from 2 to 80!')
+
+        self.source_current = new_current
+
+    def source_get_voltage(self, from_experiment=False):
+        self.basic_tomo_check(from_experiment=from_experiment)
+        return self.source_voltage
+
+    def source_get_current(self, from_experiment=False):
+        self.basic_tomo_check(from_experiment=from_experiment)
+        return self.source_current
