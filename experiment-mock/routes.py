@@ -2,6 +2,8 @@ from flask import (
     Blueprint, request, send_file
 )
 import json
+from .tomograph import Tomograph
+from .modExpError import ModExpError
 
 
 FRAME_PNG_FILENAME = 'image.png'
@@ -10,6 +12,7 @@ FRAME_PNG_FILENAME = 'image.png'
 bp_main = Blueprint('main', __name__, url_prefix='/')
 bp_tomograph = Blueprint('tomograph', __name__, url_prefix='/tomograph/<int:tomo_num>')
 
+tomograph = Tomograph()
 
 # Base routes
 @bp_main.route('/', methods=['GET'])
