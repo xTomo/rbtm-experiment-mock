@@ -7,6 +7,7 @@ class Tomograph:
         self.current_experiment = None
         self.source_current = None  # mock only property
         self.source_voltage = None  # mock only property
+        self.shutter_status = 'CLOSE'  # mock only property
 
     def basic_tomo_check(self, from_experiment):
         if not from_experiment:
@@ -57,3 +58,17 @@ class Tomograph:
     def source_get_current(self, from_experiment=False):
         self.basic_tomo_check(from_experiment=from_experiment)
         return self.source_current
+
+    def open_shutter(self, time_=0, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+        self.shutter_status = 'OPEN'  # TODO: ask for correct value
+        return self.shutter_status
+
+    def close_shutter(self, time_=0, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+        self.shutter_status = 'CLOSE'  # TODO: ask for correct value
+        return self.shutter_status
+
+    def shutter_state(self, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+        return {'state': self.shutter_status}

@@ -73,17 +73,17 @@ def source_get_current(tomo_num):
 # Shutter routes
 @bp_tomograph.route('/shutter/open/<int:time_>', methods=['GET'])
 def shutter_open(tomo_num, time_):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='open_shutter', args=time_)
 
 
 @bp_tomograph.route('/shutter/close/<int:time_>', methods=['GET'])
 def shutter_close(tomo_num, time_):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='close_shutter', args=time_)
 
 
 @bp_tomograph.route('/shutter/state', methods=['GET'])
 def shutter_state(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='shutter_state')
 
 
 # Motor routes
