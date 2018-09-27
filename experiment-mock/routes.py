@@ -14,6 +14,11 @@ bp_tomograph = Blueprint('tomograph', __name__, url_prefix='/tomograph/<int:tomo
 
 tomograph = Tomograph()
 
+@bp_tomograph.after_request
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    return response
 
 # Base route
 @bp_main.route('/', methods=['GET'])
