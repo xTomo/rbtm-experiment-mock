@@ -156,7 +156,10 @@ def detector_get_frame(tomo_num):
 
 @bp_tomograph.route('/detector/get-frame-with-closed-shutter', methods=['POST'])
 def detector_get_frame_with_closed_shutter(tomo_num):
-    return request.url
+    success, exposure, response_if_fail = check_request(request.data)
+    if not success:
+        return response_if_fail
+    return call_method_create_response(tomo_num, method_name='get_frame', args=(exposure, False), GET_FRAME_method=True)
 
 
 @bp_tomograph.route('/detector/chip_temp', methods=['GET'])
