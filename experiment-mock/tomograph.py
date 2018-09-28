@@ -1,3 +1,7 @@
+import datetime
+import time
+import json
+
 from .modExpError import ModExpError
 
 
@@ -14,6 +18,9 @@ class Tomograph:
         self.y_position = None  # mock only property
         self.angle_position = None  # mock only property
         self.prev_x_position = None  # mock only property
+        self.exposure = None  # mock only property
+        self.chip_temp = None  # mock only property
+        self.hous_temp = None  # mock only property
         self.object_present = True  # mock only property
 
     def basic_tomo_check(self, from_experiment):
@@ -143,3 +150,74 @@ class Tomograph:
                 self.prev_x_position = None
                 self.object_present = True
 
+    def get_frame(self, exposure, with_open_shutter, send_to_webpage=False, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+
+        if exposure:
+            self.set_exposure(exposure, from_experiment=from_experiment)
+
+        if with_open_shutter:
+            self.open_shutter(from_experiment=from_experiment)
+        else:
+            self.close_shutter(from_experiment=from_experiment)
+
+        try:
+            frame_metadata_json = self.get_detector_frame()
+        except Exception as e:
+            raise e
+        finally:
+            self.close_shutter(from_experiment=from_experiment)
+
+
+        try:
+            frame_metadata = json.loads(frame_metadata_json)
+        except TypeError:
+            raise ModExpError(error='Could not convert frame\'s JSON into dict')
+
+        raw_image = None
+
+        frame_metadata['image_data']['raw_image'] = raw_image
+        raw_image_with_metadata = frame_metadata
+        return raw_image_with_metadata
+
+    def set_exposure(self, new_exposure, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+
+        if type(new_exposure) not in (int, float):
+            raise ModExpError(error='Incorrect type! Exposure type must be int, but it is ' + str(type(new_exposure)))
+
+        if new_exposure < 0.1 or 16000 < new_exposure:
+            raise ModExpError(error=('Exposure must have value from 0.1 to 16000 (given is %.1f )' % new_exposure))
+
+        new_exposure = round(new_exposure)
+        self.exposure = new_exposure
+
+    def get_exposure(self, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+        return self.exposure
+
+    def get_detector_frame(self):
+
+        image = None
+        current_datetime = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+        timestamp = time.time()
+        detector_data = {'model': 'Ximea xiRAY'}
+        image_data = {'timestamp': timestamp,
+                      'datetime': current_datetime,
+                      'exposure': self.exposure,
+                      'detector': detector_data,
+                      'chip_temp': self.chip_temp,
+                      'hous_temp': self.hous_temp} # 'image': image,
+        object_data = {'present': self.object_present,
+                       'angle position': self.angle_position,
+                       'horizontal position': self.x_position,
+                       # 'vertical position': self.y_position
+                       }
+        shutter_data = {'open': self.shutter_state()['state'] == 'OPEN'}
+        source_data = {'voltage': self.source_voltage,
+                       'current': self.source_current}
+
+        return json.dumps({'image_data': image_data,
+                           'object': object_data,
+                           'shutter': shutter_data,
+                           'X-ray source': source_data})
