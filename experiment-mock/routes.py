@@ -89,7 +89,6 @@ def shutter_state(tomo_num):
 # Motor routes
 @bp_tomograph.route('/motor/set-horizontal-position', methods=['POST'])
 def motor_set_horizontal_position(tomo_num):
-    print(request.data)
     success, new_pos, response_if_fail = check_request(request.data)
     if not success:
         return response_if_fail
