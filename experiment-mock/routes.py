@@ -89,32 +89,42 @@ def shutter_state(tomo_num):
 # Motor routes
 @bp_tomograph.route('/motor/set-horizontal-position', methods=['POST'])
 def motor_set_horizontal_position(tomo_num):
-    return request.url
+    print(request.data)
+    success, new_pos, response_if_fail = check_request(request.data)
+    if not success:
+        return response_if_fail
+    return call_method_create_response(tomo_num, method_name='set_x', args=new_pos)
 
 
 @bp_tomograph.route('/motor/set-vertical-position', methods=['POST'])
 def motor_set_vertical_position(tomo_num):
-    return request.url
+    success, new_pos, response_if_fail = check_request(request.data)
+    if not success:
+        return response_if_fail
+    return call_method_create_response(tomo_num, method_name='set_y', args=new_pos)
 
 
 @bp_tomograph.route('/motor/set-angle-position', methods=['POST'])
 def motor_set_angle_position(tomo_num):
-    return request.url
+    success, new_pos, response_if_fail = check_request(request.data)
+    if not success:
+        return response_if_fail
+    return call_method_create_response(tomo_num, method_name='set_angle', args=new_pos)
 
 
 @bp_tomograph.route('/motor/get-horizontal-position', methods=['GET'])
 def motor_get_horizontal_position(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='get_x')
 
 
 @bp_tomograph.route('/motor/get-vertical-position', methods=['GET'])
 def motor_get_vertical_position(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='get_y')
 
 
 @bp_tomograph.route('/motor/get-angle-position', methods=['GET'])
 def motor_get_angle_position(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='get_angle')
 
 
 @bp_tomograph.route('/motor/move-away', methods=['GET'])

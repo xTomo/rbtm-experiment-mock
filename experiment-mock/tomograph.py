@@ -4,10 +4,15 @@ from .modExpError import ModExpError
 class Tomograph:
 
     def __init__(self):
+
         self.current_experiment = None
+
         self.source_current = None  # mock only property
         self.source_voltage = None  # mock only property
-        self.shutter_status = 'CLOSE'  # mock only property
+        self.shutter_status = None  # mock only property
+        self.x_position = None  # mock only property
+        self.y_position = None  # mock only property
+        self.angle_position = None  # mock only property
 
     def basic_tomo_check(self, from_experiment):
         if not from_experiment:
@@ -72,3 +77,47 @@ class Tomograph:
     def shutter_state(self, from_experiment=False):
         self.basic_tomo_check(from_experiment)
         return {'state': self.shutter_status}
+
+    def set_x(self, new_x, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+
+        if type(new_x) not in (int, float):
+            raise ModExpError(error='Incorrect type! Position type must be int, but it is ' + str(type(new_x)))
+
+        if new_x < -5000 or 2000 < new_x:
+            raise ModExpError(error='Position must have value from -5000 to 2000')
+
+        self.x_position = new_x
+
+    def set_y(self, new_y, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+
+        if type(new_y) not in (int, float):
+            raise ModExpError(error='Incorrect type! Position type must be int, but it is ' + str(type(new_y)))
+
+        if new_y < -5000 or 2000 < new_y:
+            raise ModExpError(error='Position must have value from -30 to 30')
+
+        self.y_position = new_y
+
+    def set_angle(self, new_angle, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+
+        if type(new_angle) not in (int, float):
+            raise ModExpError(error='Incorrect type! Position type must be int or float, but it is ' + str(type(new_angle)))
+
+        new_angle %= 360
+
+        self.angle_position = new_angle
+
+    def get_x(self, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+        return self.x_position
+
+    def get_y(self, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+        return self.y_position
+
+    def get_angle(self, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+        return self.angle_position
