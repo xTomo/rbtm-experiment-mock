@@ -14,6 +14,7 @@ class Tomograph:
         self.y_position = None  # mock only property
         self.angle_position = None  # mock only property
         self.prev_x_position = None  # mock only property
+        self.object_present = True  # mock only property
 
     def basic_tomo_check(self, from_experiment):
         if not from_experiment:
@@ -129,11 +130,16 @@ class Tomograph:
 
     def move_away(self, from_experiment=False):
         self.basic_tomo_check(from_experiment)
-        self.prev_x_position = self.x_position
-        self.x_position = -4200
+        if self.object_present:
+            self.prev_x_position = self.x_position
+            self.x_position = -4200
+            self.object_present = False
 
     def move_back(self, from_experiment=False):
         self.basic_tomo_check(from_experiment)
-        if self.prev_x_position is not None:
-            self.x_position = self.prev_x_position
-            self.prev_x_position = None
+        if not self.object_present:
+            if self.prev_x_position is not None:
+                self.x_position = self.prev_x_position
+                self.prev_x_position = None
+                self.object_present = True
+
