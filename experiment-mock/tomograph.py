@@ -19,8 +19,8 @@ class Tomograph:
         self.angle_position = None  # mock only property
         self.prev_x_position = None  # mock only property
         self.exposure = None  # mock only property
-        self.chip_temp = None  # mock only property
-        self.hous_temp = None  # mock only property
+        self.chip_temp = 10  # mock only property
+        self.hous_temp = 12  # mock only property
         self.object_present = True  # mock only property
 
     def basic_tomo_check(self, from_experiment):
@@ -179,6 +179,14 @@ class Tomograph:
         frame_metadata['image_data']['raw_image'] = raw_image
         raw_image_with_metadata = frame_metadata
         return raw_image_with_metadata
+
+    def get_detector_chip_temperature(self, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+        return self.chip_temp
+
+    def get_detector_hous_temperature(self, from_experiment=False):
+        self.basic_tomo_check(from_experiment)
+        return self.hous_temp
 
     def set_exposure(self, new_exposure, from_experiment=False):
         self.basic_tomo_check(from_experiment)

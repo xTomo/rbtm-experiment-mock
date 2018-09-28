@@ -164,12 +164,12 @@ def detector_get_frame_with_closed_shutter(tomo_num):
 
 @bp_tomograph.route('/detector/chip_temp', methods=['GET'])
 def detector_get_chip_temperature(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='get_detector_chip_temperature')
 
 
 @bp_tomograph.route('/detector/hous_temp', methods=['GET'])
 def detector_get_hous_temperature(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='get_detector_hous_temperature')
 
 
 # Experiment routes
