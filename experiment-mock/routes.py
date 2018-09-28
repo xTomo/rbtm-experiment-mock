@@ -126,19 +126,19 @@ def motor_get_angle_position(tomo_num):
     return call_method_create_response(tomo_num, method_name='get_angle')
 
 
+@bp_tomograph.route('/motor/reset-angle-position', methods=['GET'])
+def motor_reset_angle_position(tomo_num):
+    return call_method_create_response(tomo_num, method_name='reset_to_zero_angle')
+
+
 @bp_tomograph.route('/motor/move-away', methods=['GET'])
 def motor_move_away(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='move_away')
 
 
 @bp_tomograph.route('/motor/move-back', methods=['GET'])
 def motor_move_back(tomo_num):
-    return request.url
-
-
-@bp_tomograph.route('/motor/reset-angle-position', methods=['GET'])
-def motor_reset_angle_position(tomo_num):
-    return request.url
+    return call_method_create_response(tomo_num, method_name='move_back')
 
 
 # Detector routes
