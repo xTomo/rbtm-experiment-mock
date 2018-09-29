@@ -9,8 +9,7 @@ from .tomograph import Tomograph
 from .modExpError import ( ModExpError, create_event )
 
 
-FRAME_PNG_FILENAME = 'image.png'
-STORAGE_FRAMES_URI = "http://localhost:5006/storage/frames/post"
+from .constants import *
 
 
 bp_main = Blueprint('main', __name__, url_prefix='/')

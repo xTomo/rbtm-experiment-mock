@@ -3,6 +3,7 @@ import time
 import json
 
 from .modExpError import ModExpError
+from .constants import *
 
 
 class Tomograph:
