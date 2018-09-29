@@ -230,3 +230,22 @@ class Tomograph:
                            'object': object_data,
                            'shutter': shutter_data,
                            'X-ray source': source_data})
+
+    def carry_out_simple_experiment(self, exp_param):
+        time_of_experiment_start = time.time()
+        self.current_experiment = Experiment(tomograph=self, exp_param=exp_param)
+
+        exp_id = self.current_experiment.exp_id
+
+        try:
+            self.current_experiment.run()
+        except ModExpError as e:
+            event_for_send = e.to_event_dict(exp_id)
+            stop_msg = e.stop_msg
+        else:
+            event_for_send = create_event(event_type='message', exp_id=exp_id, MoF=SUCCESSFUL_STOP_MSG)
+            stop_msg = SUCCESSFUL_STOP_MSG
+
+        send_message_to_storage_webpage(event_for_send)
+
+        self.current_experiment = None

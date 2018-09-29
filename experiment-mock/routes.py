@@ -169,7 +169,45 @@ def detector_get_hous_temperature(tomo_num):
 # Experiment routes
 @bp_tomograph.route('/experiment/start', methods=['POST'])  # TODO: POST?
 def experiment_start(tomo_num):
-    return request.url
+    success, data, response_if_fail = check_request(request.data)
+    if not success:
+        return response_if_fail
+
+    if not (('experiment parameters' in data.keys()) and ('exp_id' in data.keys())):
+        return create_response(success=False, error='Incorrect format of keywords')
+
+    if not ((type(data['experiment parameters']) is dict) and (type(data['exp_id']) is str)):
+        return create_response(success=False, error='Incorrect format: incorrect types')
+
+    exp_param = data['experiment parameters']
+    exp_param['exp_id'] = data['exp_id']
+
+    success, error = check_and_prepare_exp_parameters(exp_param)
+    if not success:
+        return create_response(success=success, error=error)
+
+    tomo_state, exception_message = tomograph.tomo_state()
+    if tomo_state == 'unavailable':
+        return create_response(success=False, error="Could not connect with tomograph",
+                               exception_message=exception_message)
+    elif tomo_state == 'experiment':
+        return create_response(success=False, error="On this tomograph experiment is running")
+    elif tomo_state != 'ready':
+        return create_response(success=False, error="Undefined tomograph state")
+
+    try:
+        send_to_storage(STORAGE_EXP_START_URI, data=request.data)
+    except ModExpError as e:
+        return e.create_response()
+
+    if exp_param['advanced']:
+        pass
+        # thr = threading.Thread(target=carry_out_advanced_experiment, args=(tomograph, exp_param))
+    else:
+        thr = threading.Thread(target=tomograph.carry_out_simple_experiment, args=(exp_param,))
+        thr.start()
+
+    return create_response(True)
 
 
 @bp_tomograph.route('/experiment/stop', methods=['GET'])  # TODO: GET?
