@@ -1,5 +1,5 @@
 import threading, time, json, requests
-from io import StringIO
+from io import BytesIO
 import numpy as np
 from scipy.ndimage import zoom
 import matplotlib.pyplot as plt
@@ -191,8 +191,8 @@ def prepare_send_frame(raw_image_with_metadata, experiment, send_to_webpage=Fals
 
 def send_frame_to_storage_webpage(frame_metadata_event, image_numpy, send_to_webpage):
 
-    s = StringIO()
-    # numpy.savez_compressed(s, frame_data=image_numpy)
+    s = BytesIO()
+    np.savez_compressed(s, frame_data=image_numpy)
     s.seek(0)
     data = {'data': json.dumps(frame_metadata_event)}
     files = {'file': s}
