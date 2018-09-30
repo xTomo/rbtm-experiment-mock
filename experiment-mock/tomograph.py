@@ -163,7 +163,7 @@ class Tomograph:
             self.close_shutter(from_experiment=from_experiment)
 
         try:
-            frame_metadata_json = self.get_detector_frame()
+            frame_metadata_json = self.get_detector_frame(from_experiment=from_experiment)
         except Exception as e:
             raise e
         finally:
@@ -205,7 +205,7 @@ class Tomograph:
         self.basic_tomo_check(from_experiment)
         return self.exposure
 
-    def get_detector_frame(self):
+    def get_detector_frame(self, from_experiment=False):
 
         image = None
         current_datetime = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
@@ -222,7 +222,7 @@ class Tomograph:
                        'horizontal position': self.x_position,
                        # 'vertical position': self.y_position
                        }
-        shutter_data = {'open': self.shutter_state()['state'] == 'OPEN'}
+        shutter_data = {'open': self.shutter_state(from_experiment=from_experiment)['state'] == 'OPEN'}
         source_data = {'voltage': self.source_voltage,
                        'current': self.source_current}
 
