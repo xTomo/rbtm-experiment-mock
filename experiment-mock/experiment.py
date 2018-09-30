@@ -107,6 +107,7 @@ class Experiment:
 
     def collect_data_frames(self):
         initial_angle = self.tomograph.get_angle(from_experiment=True)
+        initial_angle = initial_angle if initial_angle is not None else 0
         self.tomograph.set_exposure(self.DATA_exposure, from_experiment=True)
         data_angles = np.round((np.arange(0, self.DATA_step_count)) * self.DATA_angle_step + initial_angle, 2) % 360
 
@@ -141,13 +142,19 @@ class Experiment:
             self.get_and_send_frame(exposure=None, mode='dark')
 
     def check_source(self):
-        if self.tomograph.source_get_current(from_experiment=True) < 2 or self.tomograph.source_get_voltage(from_experiment=True) < 2:
-            self.tomograph.source_power_off(from_experiment=True)
-            time.sleep(5)
-            self.tomograph.source_power_on(from_experiment=True)
-            time.sleep(5)
-        else:
-            pass
+
+        current = self.tomograph.source_get_current(from_experiment=True)
+        voltage = self.tomograph.source_get_voltage(from_experiment=True)
+
+        if (current is not None) and (voltage is not None):
+
+            if current < 2 or voltage < 2:
+                self.tomograph.source_power_off(from_experiment=True)
+                time.sleep(5)
+                self.tomograph.source_power_on(from_experiment=True)
+                time.sleep(5)
+            else:
+                pass
 
 
 # Frame functions
