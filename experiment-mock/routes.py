@@ -212,7 +212,13 @@ def experiment_start(tomo_num):
 
 @bp_tomograph.route('/experiment/stop', methods=['GET'])  # TODO: GET?
 def experiment_stop(tomo_num):
-    return request.url
+    exp_stop_reason_txt = "unknown"
+
+    if tomograph.current_experiment is not None:
+        tomograph.current_experiment.to_be_stopped = True
+        tomograph.current_experiment.stop_exception = ModExpError(error=exp_stop_reason_txt, stop_msg=SOMEONE_STOP_MSG)
+
+    return create_response(True)
 
 
 # functions

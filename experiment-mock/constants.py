@@ -6,3 +6,4 @@ STORAGE_EXP_FINISH_URI = "{}/storage/experiments/finish".format(STORAGE_URI)
 
 SUCCESSFUL_STOP_MSG = 'Experiment was finished successfully'
 EMERGENCY_STOP_MSG = 'Experiment was emergency stopped'
+SOMEONE_STOP_MSG = 'Experiment was stopped by someone'
