@@ -219,7 +219,8 @@ def send_to_storage(storage_uri, data, files=None):
                           exception_message='Storage\'s response:  ' + str(storage_resp_dict['result']))
 
 
-def make_png(image_numpy, png_filename=FRAME_PNG_FILENAME):
+# add underscore to filename to avoid overwrite image.png while use get_frame methods
+def make_png(image_numpy, png_filename='_' + FRAME_PNG_FILENAME):
     res = image_numpy
     try:
         small_res = zoom(np.rot90(res), zoom=0.25, order=0)

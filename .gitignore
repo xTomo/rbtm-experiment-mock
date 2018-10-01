@@ -2,3 +2,5 @@
 venv/
 
 *.py[cod]
+
+_image.png
