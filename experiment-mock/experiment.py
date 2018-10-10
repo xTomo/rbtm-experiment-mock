@@ -1,5 +1,6 @@
 import threading, time, json, requests
 from io import BytesIO
+from random import randint
 import numpy as np
 from scipy.ndimage import zoom
 import matplotlib.pyplot as plt
@@ -166,7 +167,8 @@ def prepare_send_frame(raw_image_with_metadata, experiment, send_to_webpage=Fals
     try:
         # experiment = 1
         try:
-            image_numpy = np.zeros((10, 10))
+            # image_numpy = np.zeros((100, 100))
+            image_numpy = np.random.randint(0, randint(0, 65535), (2500, 2500))
         except Exception as e:
             raise ModExpError(error='Could not convert raw image to numpy.array', exception_message=e.message)
 
