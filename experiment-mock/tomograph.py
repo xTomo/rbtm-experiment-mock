@@ -12,12 +12,12 @@ class Tomograph:
 
         self.current_experiment = None
 
-        self.source_current = None  # mock only property
-        self.source_voltage = None  # mock only property
+        self.source_current = 0  # mock only property
+        self.source_voltage = 0  # mock only property
         self.shutter_status = None  # mock only property
-        self.x_position = None  # mock only property
-        self.y_position = None  # mock only property
-        self.angle_position = None  # mock only property
+        self.x_position = 0  # mock only property
+        self.y_position = 0  # mock only property
+        self.angle_position = 0  # mock only property
         self.prev_x_position = None  # mock only property
         self.exposure = None  # mock only property
         self.chip_temp = 10  # mock only property
