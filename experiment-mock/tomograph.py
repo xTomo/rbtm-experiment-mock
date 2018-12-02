@@ -86,7 +86,7 @@ class Tomograph:
 
     def shutter_state(self, from_experiment=False):
         self.basic_tomo_check(from_experiment)
-        return {'state': self.shutter_status}
+        return json.dumps({'state': self.shutter_status})
 
     def set_x(self, new_x, from_experiment=False):
         self.basic_tomo_check(from_experiment)
