@@ -148,14 +148,16 @@ class Experiment:
         voltage = self.tomograph.source_get_voltage(from_experiment=True)
 
         if (current is not None) and (voltage is not None):
+            if current > 2 and voltage > 2:
+                return
 
-            if current < 2 or voltage < 2:
-                self.tomograph.source_power_off(from_experiment=True)
-                time.sleep(5)
-                self.tomograph.source_power_on(from_experiment=True)
-                time.sleep(5)
-            else:
-                pass
+        print('X-ray source in wrong mode, try restart (off/on)')
+        print('current = {0}, voltage = {1}'.format(current, voltage))
+
+        self.tomograph.source_power_off(from_experiment=True)
+        time.sleep(5)
+        self.tomograph.source_power_on(from_experiment=True)
+        time.sleep(5)
 
 
 # Frame functions
