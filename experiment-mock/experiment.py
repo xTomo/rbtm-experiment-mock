@@ -71,6 +71,9 @@ class Experiment:
         self.DATA_angle_step = exp_param['DATA']['angle step']
         self.DATA_count_per_step = exp_param['DATA']['count per step']
 
+        frames_total_count = self.DARK_count + self.EMPTY_count + self.DATA_step_count * self.DATA_count_per_step
+        self.total_digits_count = len(str(abs(frames_total_count - 1)))
+
         self.FOSITW = FOSITW
 
         self.frame_num = 0
@@ -88,8 +91,7 @@ class Experiment:
         # frame_dict = {  u'image_data':  {   'image': np.empty((10, 10)),    },  }
 
         raw_image_with_metadata['mode'] = mode
-        raw_image_with_metadata['number'] = self.frame_num
-
+        raw_image_with_metadata['number'] = str(self.frame_num).zfill(self.total_digits_count)
 
         send_to_webpage = (self.frame_num % self.FOSITW == 0)
         self.frame_num += 1
