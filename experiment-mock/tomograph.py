@@ -248,4 +248,5 @@ class Tomograph:
 
         send_message_to_storage_webpage(event_for_send)
 
+        print('experiment was finished')
         self.current_experiment = None

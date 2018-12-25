@@ -89,6 +89,9 @@ class Experiment:
 
         raw_image_with_metadata['mode'] = mode
         raw_image_with_metadata['number'] = self.frame_num
+
+        # print('raw_image_with_metadata number', raw_image_with_metadata['number'])
+
         send_to_webpage = (self.frame_num % self.FOSITW == 0)
         self.frame_num += 1
 
@@ -121,6 +124,7 @@ class Experiment:
             self.tomograph.set_angle(float(current_angle), from_experiment=True)
 
             for j in range(0, self.DATA_count_per_step):
+                print('collect_data_frames current_angle:{0} j:{1}'.format(current_angle, j))
                 self.get_and_send_frame(exposure=None, mode='data')
 
         self.tomograph.close_shutter(0, from_experiment=True)
@@ -130,6 +134,7 @@ class Experiment:
         self.tomograph.set_exposure(self.EMPTY_exposure, from_experiment=True)
         self.tomograph.open_shutter(0, from_experiment=True)
         for i in range(0, self.EMPTY_count):
+            print('collect_empty_frames {}'.format(i))
             self.check_source()
             self.get_and_send_frame(exposure=None, mode='empty')
         self.tomograph.close_shutter(0, from_experiment=True)
@@ -140,6 +145,7 @@ class Experiment:
         time.sleep(1.0)
         self.tomograph.set_exposure(self.DARK_exposure, from_experiment=True)
         for i in range(0, self.DARK_count):
+            print('collect_dark_frames {}'.format(i))
             self.get_and_send_frame(exposure=None, mode='dark')
 
     def check_source(self):
