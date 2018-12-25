@@ -222,7 +222,8 @@ class Tomograph:
                        'horizontal position': self.x_position,
                        # 'vertical position': self.y_position
                        }
-        shutter_data = {'open': self.shutter_state(from_experiment=from_experiment)['state'] == 'OPEN'}
+        shutter_state = json.loads(self.shutter_state(from_experiment=from_experiment))
+        shutter_data = {'open': shutter_state['state'] == 'OPEN'}
         source_data = {'voltage': self.source_voltage,
                        'current': self.source_current}
 
