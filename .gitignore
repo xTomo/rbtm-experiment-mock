@@ -4,3 +4,4 @@ venv/
 *.py[cod]
 
 image.png
+.DS_Store
