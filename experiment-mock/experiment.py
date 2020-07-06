@@ -70,6 +70,7 @@ class Experiment:
         self.DATA_exposure = exp_param['DATA']['exposure']
         self.DATA_angle_step = exp_param['DATA']['angle step']
         self.DATA_count_per_step = exp_param['DATA']['count per step']
+        self.DATA_delay = exp_param['DATA']['delay']
 
         frames_total_count = self.DARK_count + self.EMPTY_count + self.DATA_step_count * self.DATA_count_per_step
         self.total_digits_count = len(str(abs(frames_total_count - 1)))
@@ -126,6 +127,7 @@ class Experiment:
 
             for j in range(0, self.DATA_count_per_step):
                 self.get_and_send_frame(exposure=None, mode='data')
+                time.sleep(self.DATA_delay)
 
         self.tomograph.close_shutter(0, from_experiment=True)
 
