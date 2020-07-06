@@ -294,9 +294,12 @@ def check_and_prepare_exp_parameters(exp_param):
 
         if not ('angle step' in exp_param['DATA'].keys()) and ('count per step' in exp_param['DATA'].keys()):
             return False, 'Incorrect format in \'DATA\' parameters'
-        if not (
-                    (type(exp_param['DATA']['angle step']) is float) and (
-                            type(exp_param['DATA']['count per step']) is int)):
+
+        angle_step_correct_type = type(exp_param['DATA']['angle step']) is float
+        count_per_step_correct_type = type(exp_param['DATA']['count per step']) is int
+        delay_correct_type = type(exp_param['DATA']['delay']) is int
+
+        if not (angle_step_correct_type and count_per_step_correct_type and delay_correct_type):
             return False, 'Incorrect format in \'DATA\' parameters'
 
         # TO DELETE AFTER WEB-PAGE OF ADJUSTMENT START CHECK PARAMETERS
